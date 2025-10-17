@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 import { flattenConnection, MediaFile } from "@shopify/hydrogen-react";
@@ -37,7 +38,11 @@ export default async function Home() {
           {data?.products?.edges?.map(({ node }) => {
             const img = node.images?.edges?.[0]?.node;
             return (
-              <div key={node.id} className="flex flex-col items-start">
+              <Link
+                key={node.id}
+                href={`/products/${node.handle}`}
+                className="flex flex-col items-start hover:opacity-80 transition-opacity"
+              >
                 {img && (
                   <Image
                     src={img.url}
@@ -48,7 +53,7 @@ export default async function Home() {
                   />
                 )}
                 <div className="mt-2 font-medium">{node.title}</div>
-              </div>
+              </Link>
             );
           })}
         </div>
