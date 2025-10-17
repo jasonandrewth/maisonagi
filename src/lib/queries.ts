@@ -9,18 +9,20 @@ export const PRODUCTS_QUERY = /* GraphQL */ `
           title
           description
           featuredImage {
-            url
+            url(transform: { preferredContentType: JPG })
             altText
             width
             height
+            id
           }
           images(first: 8) {
             edges {
               node {
-                url
+                url(transform: { preferredContentType: JPG })
                 altText
                 width
                 height
+                id
               }
             }
           }
@@ -60,18 +62,20 @@ export const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
       description
       descriptionHtml
       featuredImage {
-        url
+        url(transform: { preferredContentType: JPG })
         altText
         width
         height
+        id
       }
       images(first: 8) {
         edges {
           node {
-            url
+            url(transform: { preferredContentType: JPG })
             altText
             width
             height
+            id
           }
         }
       }
@@ -98,10 +102,11 @@ export const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
             title
             availableForSale
             image {
-              url
+              url(transform: { preferredContentType: JPG })
               altText
               width
               height
+              id
             }
             price {
               amount
