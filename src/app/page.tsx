@@ -1,95 +1,58 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
-export default function Home() {
+import { flattenConnection, MediaFile } from "@shopify/hydrogen-react";
+
+import { client } from "@/shopify/client";
+import { PRODUCTS_QUERY, NAME_QUERY } from "@/lib/queries";
+
+type Product = {
+  id: string;
+  handle: string;
+  title: string;
+  images?: { edges: { node: { url: string; altText?: string } }[] };
+};
+
+type StoreData = {
+  shop: { name: string };
+  products: { edges: { node: Product }[] };
+};
+
+export default async function Home() {
+  const response = await fetch(client.getStorefrontApiUrl(), {
+    body: JSON.stringify({ query: PRODUCTS_QUERY }),
+    headers: client.getPublicTokenHeaders(),
+    method: "POST",
+  });
+
+  if (!response.ok) throw new Error(response.statusText);
+  const json = await response.json();
+  const data: StoreData = json.data;
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+        <h1>{data?.shop?.name || "Shop"}</h1>
+        <div className="grid grid-cols-2 gap-4 mt-6">
+          {data?.products?.edges?.map(({ node }) => {
+            const img = node.images?.edges?.[0]?.node;
+            return (
+              <div key={node.id} className="flex flex-col items-start">
+                {img && (
+                  <Image
+                    src={img.url}
+                    alt={img.altText || node.title}
+                    width={300}
+                    height={300}
+                    className="rounded-md object-cover"
+                  />
+                )}
+                <div className="mt-2 font-medium">{node.title}</div>
+              </div>
+            );
+          })}
         </div>
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
