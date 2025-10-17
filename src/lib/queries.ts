@@ -1,9 +1,6 @@
 // lib/queries.ts
 export const PRODUCTS_QUERY = /* GraphQL */ `
   query Products($first: Int = 20) {
-    shop {
-      name
-    }
     products(first: $first, sortKey: CREATED_AT, reverse: true) {
       edges {
         node {
