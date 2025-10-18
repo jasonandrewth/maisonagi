@@ -9,9 +9,9 @@ import ProductPage from "@/components/product/productPage";
 export default async function ProductPageServer({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const response = await fetch(client.getStorefrontApiUrl(), {
     method: "POST",
