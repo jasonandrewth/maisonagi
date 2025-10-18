@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { cn } from "@/lib/utils/cn";
+
 import Layout from "@/components/global/layout";
 
 const geistSans = Geist({
@@ -26,7 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        // className="bg-background"
+        className={`${geistSans.variable} ${geistMono.variable}`}
+      >
         <Layout>{children}</Layout>
       </body>
     </html>

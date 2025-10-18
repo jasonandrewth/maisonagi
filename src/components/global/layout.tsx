@@ -5,6 +5,7 @@ import { FC, PropsWithChildren } from "react";
 import { ShopifyProvider, CartProvider } from "@shopify/hydrogen-react";
 
 //Components
+import Nav from "./nav";
 import Cart from "@/components/cart/cart";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
@@ -18,7 +19,8 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
       languageIsoCode="DE"
     >
       <CartProvider key={"cart"}>
-        <main>
+        <Nav />
+        <main className="mt-24">
           <Cart />
           {children}
         </main>

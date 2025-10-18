@@ -96,8 +96,8 @@ const Item = ({ line, index = 0 }: { line: CartLine; index: number }) => {
           <Link href={url} scroll={false} title={title}>
             <Image
               src={image?.url as string}
-              width={20 as number}
-              height={20 as number}
+              width={66 as number}
+              height={96 as number}
               sizes="4rem"
               alt=""
               style={{
@@ -106,7 +106,12 @@ const Item = ({ line, index = 0 }: { line: CartLine; index: number }) => {
             />
           </Link>
         )}
-        <button onClick={() => cart.linesRemove([line.id])}>X</button>
+        <button
+          className="bg-white p-2 z-50"
+          onClick={() => cart.linesRemove([line.id])}
+        >
+          X
+        </button>
       </motion.div>
     </motion.li>
   );

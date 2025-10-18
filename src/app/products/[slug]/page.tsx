@@ -6,12 +6,12 @@ import Image from "next/image";
 //components
 import ProductPage from "@/components/product/productPage";
 
-type ProductPageProps = {
+export default async function ProductPageServer({
+  params,
+}: {
   params: { slug: string };
-};
-
-export default async function ProductPageServer({ params }: ProductPageProps) {
-  const { slug } = await params;
+}) {
+  const { slug } = params;
 
   const response = await fetch(client.getStorefrontApiUrl(), {
     method: "POST",
